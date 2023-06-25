@@ -67,3 +67,10 @@ class Post(db.Model):
         if category not in ['Fiction', 'Non-Fiction']:
             raise ValueError("Post category must be either Fiction or Non-Fiction.")
         return category
+    
+    @validates('title')
+    def validate_title_clickbait(self, key, title):
+        keywords = ["Won't Believe", "Secret", "Top", "Guess"]
+        if not any(keyword in title for keyword in keywords):
+            raise ValueError("Post title should be sufficiently clickbait-y.")
+        return title
